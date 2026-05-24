@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using StudentManageSystem.Context;
+
 namespace StudentManageSystem
 {
     public class Program
@@ -11,6 +14,12 @@ namespace StudentManageSystem
             // 解决有没有的问题
             // 注册所有依赖服务
             builder.Services.AddRazorPages();
+
+            // 注册数据库依赖
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+            );
 
             var app = builder.Build();
 
